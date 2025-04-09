@@ -1,10 +1,12 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { savePost, getPosts } from './storage.js' 
+
 const app = express();
 const port = 80;
-const fs = require('fs');
-import { savePost } from './storage';
+
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -23,7 +25,7 @@ const upload = multer({ storage: storage });
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('list-article');
+  res.render('list-article', {articles: null});
 });
 
 app.get('/create', (req, res) => {
@@ -44,14 +46,13 @@ app.post('/submit', upload.single('fichier'), (req, res) => {
 
   try {
     savePost(req.body)
+    articles = getPosts()
   } catch(err) {
-    res.render('display')
+    res.render('list_article')
   }
 
-  res.render('display', {
-    nom,
-    email,
-    fichier
+  res.render('list_article', {
+    articles,
   });
 });
 

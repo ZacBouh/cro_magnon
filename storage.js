@@ -33,6 +33,10 @@ export const getPosts = () => {
     return posts
 }
 
-export const getPostById = () => {
+const deletePost = (postId) => {
+
+}
+
+const getPostById = (postId) => {
 
 }
