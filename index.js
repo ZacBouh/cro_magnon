@@ -11,7 +11,6 @@ const port = 80;
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use('/fichiers', express.static('fichiers'));
-app.use(express.static('public'));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -33,25 +32,23 @@ app.get('/create', (req, res) => {
 });
 
 app.get('/update', (req, res) => {
-  res.render('update-form');
+  res.render('update-form', {});
 });
 
 
 app.post('/submit', upload.single('fichier'), (req, res) => {
-  const nom = req.body.nom;
-  const email = req.body.email;
-  const fichier = req.file ? req.file.filename : null;
-
   
-
   try {
+
+    console.log('Saving post : ', req.body)
     savePost(req.body)
     articles = getPosts()
   } catch(err) {
-    res.render('list_article')
+    console.log('Failed to save post : ', err)
+    res.render('list-article')
   }
 
-  res.render('list_article', {
+  res.render('list-article', {
     articles,
   });
 });

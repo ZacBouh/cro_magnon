@@ -10,7 +10,7 @@ export const savePost = (post) => {
     post['id'] = randomUUID() 
     posts.push(post)
     
-    data = JSON.stringify(posts)
+    const data = JSON.stringify(posts)
     fs.writeFile('posts.json', data, (err) => {
         console.error(`failed to save post : \n${err}`)
     })
