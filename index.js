@@ -21,7 +21,15 @@ const upload = multer({ storage: storage });
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('form');
+  res.render('list-article');
+});
+
+app.get('/create', (req, res) => {
+  res.render('create-form');
+});
+
+app.get('/update', (req, res) => {
+  res.render('update-form');
 });
 
 app.post('/submit', upload.single('fichier'), (req, res) => {
