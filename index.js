@@ -8,6 +8,7 @@ const port = 80;
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use('/fichiers', express.static('fichiers'));
+app.use(express.static('public'));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
