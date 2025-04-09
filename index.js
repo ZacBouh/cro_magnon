@@ -1,9 +1,10 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-
 const app = express();
 const port = 80;
+const fs = require('fs');
+import { savePost } from './storage';
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -32,10 +33,19 @@ app.get('/update', (req, res) => {
   res.render('update-form');
 });
 
+
 app.post('/submit', upload.single('fichier'), (req, res) => {
   const nom = req.body.nom;
   const email = req.body.email;
   const fichier = req.file ? req.file.filename : null;
+
+  
+
+  try {
+    savePost(req.body)
+  } catch(err) {
+    res.render('display')
+  }
 
   res.render('display', {
     nom,
