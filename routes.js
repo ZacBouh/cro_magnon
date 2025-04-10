@@ -9,6 +9,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use('/fichiers', express.static('fichiers'));
+app.use('/public', express.static('public'));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
