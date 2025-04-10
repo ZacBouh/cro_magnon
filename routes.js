@@ -33,12 +33,12 @@ app.get('/create', (req, res) => {
 })
 
 app.post('/articles/:id/update', upload.single('fichier'), async (req, res) => {
-  console.log('Request body : ', req.body)
-  if (req?.file) req.body.img = req.file.filename
-  req.body.id = req.params.id
-  await savePost(req.body)
-  res.redirect('/')
-})
+  console.log("Request body : ", req.body)
+  if(req?.file) req.body['img'] = req.file.filename;  
+  req.body['id'] = req.params.id
+  await savePost(req.body) 
+  res.redirect('/');
+});
 
 app.get('/articles/:id/edit', async (req, res) => {
   const postId = req.params.id
