@@ -7,7 +7,10 @@ export const savePost = async  (post) => {
     if (!posts){
         posts = []
     }
-    post['id'] = randomUUID() 
+
+    if(!post['id']){
+        post['id'] = randomUUID() 
+    }
     posts.push(post)
     
     const data = JSON.stringify(posts)

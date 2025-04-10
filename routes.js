@@ -33,6 +33,8 @@ app.get('/create', (req, res) => {
   res.render('create-form');
 });
 
+
+
 app.get('/articles/:id/edit', async (req, res) => {
   const postId = req.params.id
   if (!postId) res.redirect('/')
@@ -42,6 +44,12 @@ app.get('/articles/:id/edit', async (req, res) => {
 
   res.render('update-form', {article});
 });
+
+app.get('/articles/:id/update', async (req, res) => {
+  await savePost(req.body) 
+  res.redirect('/');
+});
+
 
 app.post('/articles/:id', async (req,res) => {
   const postId = req.params.id
