@@ -10,7 +10,7 @@
         <%- include('partials/header') %>
         <div class="form-container">
         <h1>Modification d'un article</h1>
-        <form action="/articles/<%= article.id %>/update" method="PUT" enctype="multipart/form-data">
+        <form action="/articles/<%= article.id %>/update" method="POST" enctype="multipart/form-data">
         <label>Titre <input type="text" name="titre" value="<%= article.titre %>" required></label>
         <label>Description <input type="text" name="description" value="<%= article.description %>" required></label>
         <label>Auteur <input type="text" name="auteur" value="<%= article.auteur %>" required></label>

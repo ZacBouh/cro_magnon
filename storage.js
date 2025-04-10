@@ -10,6 +10,12 @@ export const savePost = async  (post) => {
 
     if(!post['id']){
         post['id'] = randomUUID() 
+    } else {
+        posts = posts.filter((item) => item.id !== post.id)
+        if(!post?.img){
+            const previousState = await getPostById(post.id)
+            post['img'] = previousState?.img
+        }
     }
     posts.push(post)
     

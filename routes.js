@@ -33,7 +33,14 @@ app.get('/create', (req, res) => {
   res.render('create-form');
 });
 
-
+app.post('/articles/:id/update', upload.single('fichier'), async (req, res) => {
+  console.log("Request body : ", req.body)
+  if(req?.file) req.body['img'] = req.file.filename;  
+  req.body['id'] = req.params.id
+  await savePost(req.body) 
+  res.redirect('/');
+  
+});
 
 app.get('/articles/:id/edit', async (req, res) => {
   const postId = req.params.id
@@ -43,11 +50,6 @@ app.get('/articles/:id/edit', async (req, res) => {
   if (!article) res.redirect('/')
 
   res.render('update-form', {article});
-});
-
-app.get('/articles/:id/update', async (req, res) => {
-  await savePost(req.body) 
-  res.redirect('/');
 });
 
 
@@ -66,7 +68,7 @@ app.post('/submit', upload.single('fichier'), async (req, res) => {
   let articles = null
 
   try {
-    req.body['img'] = req.file.filename
+    if(req?.file) req.body['img'] = req.file.filename;
     console.log('Saving post : ', req.body)
     await savePost(req.body)
     articles = await getPosts()
