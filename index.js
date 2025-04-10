@@ -1,6 +1,6 @@
 import { app } from './routes.js'
 
-const port = 80;
+const port = 3000
 app.listen(port, () => {
-    console.log(`Serveur démarré sur http://localhost:${port}`);
-  });
+  console.log(`Serveur démarré sur http://localhost:${port}`)
+})
