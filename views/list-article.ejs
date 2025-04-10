@@ -4,24 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liste des articles</title>
+  <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
     <%- include('partials/header') %>
   <h1>Liste des articles</h1>
 
   <% if (articles && articles.length > 0) { %>
-    <ul>
+    <ul class="article-list">
       <% articles.forEach(article => { %>
-        <li>
+        <li class="article-card">
+          <img src="/fichiers/<%= article.img %>" alt="<%= article.titre %>">
           <h2><%= article.titre %></h2>
           <p><%= article.description %></p>
-
-          <!-- Bouton Modifier -->
+          <p><strong>Auteur :</strong> <%= article.auteur %></p>
+    
           <form action="/articles/<%= article.id %>/edit" method="GET" style="display:inline;">
             <button type="submit">Modifier</button>
           </form>
-
-          <!-- Bouton Supprimer -->
+    
           <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="display:inline;">
             <button type="submit" onclick="return confirm('Supprimer cet article ?')">Supprimer</button>
           </form>
