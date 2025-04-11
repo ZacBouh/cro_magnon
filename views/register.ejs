@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-  <%- include('partials/header') %>
 
   <div class="form-container">
     <h1>Inscription</h1>
@@ -23,15 +22,15 @@
       </label>
 
       <button type="submit">Valider</button>
+      <a href="/login" style="text-decoration: none; color: #333;">Connexion</a>
     </form>
   </div>
   <script type="module">
     import { registerForm } from '/public/js/form.js';
 
     const form = document.getElementById('articleForm');
-    const token = '<%= token %>';
 
-    form.addEventListener('submit', (e) => submitForm(e, token));
+    form.addEventListener('submit', (e) => submitForm(e));
   </script>
 </body>
 </html>

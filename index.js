@@ -1,4 +1,6 @@
-import { app } from './routes.js'
+import { config } from 'dotenv'
+config()
+const {app} = await import('./routes.js')
 
 const port = 3000
 app.listen(port, () => {
