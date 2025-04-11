@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import multer from 'multer'
 import path from 'path'
-import { savePost, getPosts, getPostById, deletePost, login, saveUser, getUserByEmail } from './storage.js'
+import { savePost, getPosts, getPostById, deletePost, login, saveUser, getUserByEmail, getUsersByEmail, saveUser } from './storage.js'
 import { getJwt } from './auth.js'
 
 const app = express()
@@ -23,7 +23,7 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-  res.locals.jwt = req.session && req.session.jwt || 'null'; // ou req.user.token, ou autre
+  res.locals.token = req.session && req.session.jwt || null; // ou req.user.token, ou autre
   next();
 });
 
@@ -45,20 +45,27 @@ app.get('/', async (req, res) => {
   res.render('list-article', { articles })
 })
 
-app.post('/login', async (req, res) => {
-    
-    const { success, ...payload } = login(req.body)
 
-    if (!success) {
-      res.render('login', {
-        error
-      })
-      return
-    }
-    req.session.jwt = getJwt(payload.user)  
-    res.redirect('/')
-  })
+app.post('/login', upload.none(), async (req, res) => {
+  console.log("POST on /login")
+  const { success, ...payload } = await login(req.body.email, req.body.password)
+  if (!success) {
+    res.render('login', {
+      error
+    })
+    return
+  }
+  
+  console.log("Payload ", payload)
+  req.session.jwt = getJwt(payload.user)  
+  res.redirect('/')
+})
 
+
+app.get('/login', async (req, res) => {
+  console.log('request on /login')
+  res.render('login')
+})
 
 
 app.get('/create', (req, res) => {
@@ -117,11 +124,11 @@ app.get('/register', (req, res) => {
   res.render('register')
 })
 
-app.post('/register', async (req, res) => {
+app.post('/register', upload.none(), async (req, res) => {
   console.log("Request body : ", req.body)
 
   const { email, password } = req.body
-  const existingUser = await getUserByEmail(email)
+  const existingUser = await getUsersByEmail(email)
 
   if (existingUser) {
     console.log('Email déjà utilisé')

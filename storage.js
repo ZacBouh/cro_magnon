@@ -142,7 +142,10 @@ export const getUserByEmail = async (userEmail) => {
     return null
   }
 
-  const user = users.filter((user) => user.email == userEmail)[0]
+  const user = users.filter((user) =>{ 
+    console.log("filter : ", user, " email : ", userEmail)
+    return user.email == userEmail
+  })[0]
   if (!user) {
     console.log('No user found with Email ', userEmail)
     return null
