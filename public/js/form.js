@@ -11,7 +11,9 @@ export async function submitForm(event, token) {
     },
     body: formData,
   });
-
+  if(response.redirected){
+    window.location.href = response.url
+  }
   const result = await response.json();
   console.log(result);
 }
@@ -29,7 +31,9 @@ export async function updateForm(event, token, id) {
     },
     body: formData,
   });
-
+  if(response.redirected){
+    window.location.href = response.url
+  }
   const result = await response.json();
   console.log(result);
 }
@@ -44,7 +48,9 @@ export async function loginForm(event) {
     method: "POST",
     body: formData,
   });
-
+  if(response.redirected){
+    window.location.href = response.url
+  }
   const result = await response.json();
   console.log(result);
 }
@@ -54,13 +60,14 @@ export async function registerForm(event) {
 
   const form = event.target;
   const formData = new FormData(form);
-console.log(form);
 
   const response = await fetch("/register", {
     method: "POST",
     body: formData,
   });
-
+  if(response.redirected){
+    window.location.href = response.url
+  }
   const result = await response.json();
   console.log(result);
 }

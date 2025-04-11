@@ -90,7 +90,7 @@ app.get('/register', (req, res) => {
   res.render('register')
 })
 
-app.post('/register', async (req, res) => {
+app.post('/register', upload.none(), async (req, res) => {
   console.log("Request body : ", req.body)
 
   const { email, password } = req.body
@@ -106,7 +106,7 @@ app.post('/register', async (req, res) => {
   try {
     await saveUser(newUser)
     console.log('Utilisateur enregistré avec succès')
-    res.redirect('/') 
+    res.redirect('/login') 
   } catch (err) {
     console.error('Erreur lors de l’enregistrement :', err)
     res.status(500).send("Erreur lors de l'inscription")
