@@ -112,4 +112,32 @@ app.post('/submit', upload.single('fichier'), async (req, res) => {
   })
 })
 
+//Users
+app.get('/register', (req, res) => {
+  res.render('register')
+})
+
+app.post('/register', async (req, res) => {
+  console.log("Request body : ", req.body)
+
+  const { email, password } = req.body
+  const existingUser = await getUserByEmail(email)
+
+  if (existingUser) {
+    console.log('Email déjà utilisé')
+    return res.send('Cet email est déjà enregistré.')
+  }
+
+  const newUser = { email, password }
+
+  try {
+    await saveUser(newUser)
+    console.log('Utilisateur enregistré avec succès')
+    res.redirect('/') 
+  } catch (err) {
+    console.error('Erreur lors de l’enregistrement :', err)
+    res.status(500).send("Erreur lors de l'inscription")
+  }
+})
+
 export { app }
