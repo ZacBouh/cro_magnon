@@ -12,8 +12,13 @@ export async function submitForm(event, token) {
     body: formData,
   });
 
-  const result = await response.json();
-  console.log(result);
+  if(response.redirected){
+    window.location.href = response.url
+  }
+  else{
+    const result = await response.json();
+    alert(result.error);
+  }
 }
 
 export async function updateForm(event, token, id) {
@@ -29,9 +34,13 @@ export async function updateForm(event, token, id) {
     },
     body: formData,
   });
-
-  const result = await response.json();
-  console.log(result);
+  if(response.redirected){
+    window.location.href = response.url
+  }
+  else{
+    const result = await response.json();
+    alert(result.error);
+  }
 }
 
 export async function loginForm(event) {
@@ -45,8 +54,13 @@ export async function loginForm(event) {
     body: formData,
   });
 
-  const result = await response.json();
-  console.log(result);
+  if(response.redirected){
+    window.location.href = response.url
+  }
+  else{
+    const result = await response.json();
+    alert(result.error);
+  }
 }
 
 export async function registerForm(event) {
@@ -60,7 +74,12 @@ export async function registerForm(event) {
     body: formData,
   });
 
-  const result = await response.json();
-  console.log(result);
+  if(response.redirected){
+    window.location.href = response.url
+  }
+  else{
+    const result = await response.json();
+    alert(result.error);
+  }
 }
 

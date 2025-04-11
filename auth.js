@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import pkg from 'jsonwebtoken';
+const { JsonWebTokenError } = pkg;
 
 const secret = process.env.JWT_KEY
 
