@@ -1,24 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modification d'un article</title>
+  <link rel="stylesheet" href="/public/css/style.css">
 </head>
-    <body>
-        <%- include('partials/header') %>
-        <div class="form-container">
-        <h1>Modification d'un article</h1>
-        <form action="/articles/<%= article.id %>/update" method="POST" enctype="multipart/form-data">
-        <label>Titre <input type="text" name="titre" value="<%= article.titre %>" required></label>
-        <label>Description <input type="text" name="description" value="<%= article.description %>" required></label>
-        <label>Auteur <input type="text" name="auteur" value="<%= article.auteur %>" required></label>
-        <label>Image <input type="file" name="fichier"></label>
-        <img src="/fichiers/<%= article.img %>" alt="<%= article.titre %>">
-        <button type="submit">Valider</button>
-        </form>
-    </div>
-  </body>
-</html>
+<body>
+  <%- include('partials/header') %>
 
+  <div class="form-container">
+    <h1>Modification d'un article</h1>
+
+    <form onsubmit="handleUpdate(event)" enctype="multipart/form-data">
+      <label>Titre
+        <input type="text" name="titre" value="<%= article.titre %>" required>
+      </label>
+
+      <label>Description
+        <input type="text" name="description" value="<%= article.description %>" required>
+      </label>
+
+      <label>Auteur
+        <input type="text" name="auteur" value="<%= article.auteur %>" required>
+      </label>
+
+      <label>Image
+        <input type="file" name="fichier">
+      </label>
+
+      <img src="/fichiers/<%= article.img %>" alt="<%= article.titre %>">
+
+      <button type="submit">Valider</button>
+    </form>
+  </div>
+
+  <!-- Script pour appeler la fonction -->
+  <script type="module">
+    import { updateForm } from '/public/js/form.js';
+
+    const token = '<%= token %>';
+    const id = '<%= article.id %>';
+
+    window.handleUpdate = (e) => updateForm(e, token, id);
+  </script>
+</body>
+</html>

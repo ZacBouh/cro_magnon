@@ -2,42 +2,31 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Création d'un article</title>
+  <title>Connexion</title>
   <link rel="stylesheet" href="/public/css/style.css">
 </head>
-
 <body>
   <%- include('partials/header') %>
 
   <div class="form-container">
-    <h1>Création d'un article</h1>
+    <h1>Connexion</h1>
 
     <form id="articleForm" enctype="multipart/form-data">
       <label>
-        Titre
-        <input type="text" name="titre" required>
+        Email
+        <input type="text" name="email" required>
       </label>
 
       <label>
-        Description
-        <input type="text" name="description" required>
-      </label>
-
-      <label>
-        Auteur
-        <input type="text" name="auteur" required>
-      </label>
-
-      <label>
-        Image
-        <input type="file" name="fichier">
+        Mot de passe
+        <input type="password" name="password" required>
       </label>
 
       <button type="submit">Valider</button>
     </form>
   </div>
   <script type="module">
-    import { submitForm } from '/public/js/form.js';
+    import { loginForm } from '/public/js/form.js';
 
     const form = document.getElementById('articleForm');
     const token = '<%= token %>';
