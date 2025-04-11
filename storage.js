@@ -77,3 +77,11 @@ export const getPostById = async (postId) => {
   }
   return post
 }
+
+export const saveUser = () => {
+
+}
+
+export const getUserById = (id) => {
+
+}
