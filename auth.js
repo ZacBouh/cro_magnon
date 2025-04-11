@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const secret = process.env.JWT_KEY
 
@@ -22,7 +22,7 @@ export const authMiddleware = (req, res, next) => {
         const user = validateJwt(token)
         next()   
     } catch (error) {
-        if (error instanceof JsonWebTokenError ) {
+        if (error instanceof jwt.JsonWebTokenError ) {
             console.log("[MIDDLEWARE] Invalid token")
             res.redirect('login')
             return 
