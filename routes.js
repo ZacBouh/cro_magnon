@@ -137,7 +137,10 @@ app.post('/register', async (req, res) => {
   } catch (err) {
     console.error('Erreur lors de l’enregistrement :', err)
     res.status(500).send("Erreur lors de l'inscription")
+    res.json({error: "Mon message"})
   }
 })
+
+
 
 export { app }
