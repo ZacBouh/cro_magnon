@@ -23,7 +23,7 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-  res.locals.jwt = req.session && req.session.jwt || null; // ou req.user.token, ou autre
+  res.locals.jwt = req.session && req.session.jwt || 'null'; // ou req.user.token, ou autre
   next();
 });
 

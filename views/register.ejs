@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-  <%- include('partials/header') %>
 
   <div class="form-container">
     <h1>Inscription</h1>
@@ -30,9 +29,8 @@
     import { registerForm } from '/public/js/form.js';
 
     const form = document.getElementById('articleForm');
-    const token = '<%= token %>';
 
-    form.addEventListener('submit', (e) => submitForm(e, token));
+    form.addEventListener('submit', (e) => submitForm(e));
   </script>
 </body>
 </html>
