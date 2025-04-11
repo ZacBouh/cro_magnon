@@ -1,7 +1,9 @@
 import express from 'express'
+import session from 'express-session'
 import multer from 'multer'
 import path from 'path'
-import { savePost, getPosts, getPostById, deletePost } from './storage.js'
+import { savePost, getPosts, getPostById, deletePost, login } from './storage.js'
+import { getJwt } from './auth.js'
 
 const app = express()
 
@@ -9,9 +11,19 @@ app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
 app.use('/fichiers', express.static('fichiers'))
 app.use('/public', express.static('public'))
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+   cookie: {
+    maxAge: 1000 * 60 * 60,
+    httpOnly: true,
+    secure: false
+   }
+}))
 
 app.use((req, res, next) => {
-  res.locals.token = req.session && req.session.token || 'fff'; // ou req.user.token, ou autre
+  res.locals.jwt = req.session && req.session.jwt || null; // ou req.user.token, ou autre
   next();
 });
 
@@ -32,6 +44,22 @@ app.get('/', async (req, res) => {
   console.dir(articles)
   res.render('list-article', { articles })
 })
+
+app.post('/login', async (req, res) => {
+    
+    const { success, ...payload } = login(req.body)
+
+    if (!success) {
+      res.render('login', {
+        error
+      })
+      return
+    }
+    req.session.jwt = getJwt(payload.user)  
+    res.redirect('/')
+  })
+
+
 
 app.get('/create', (req, res) => {
   res.render('create-form')
