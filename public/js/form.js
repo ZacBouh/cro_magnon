@@ -59,8 +59,12 @@ export async function registerForm(event) {
     method: "POST",
     body: formData,
   });
-
-  const result = await response.json();
+  
+  if(response.redirected){
+    window.localStorage.href = response.url
+  } else {
+    const result = await response.json();
+  }
   console.log(result);
 }
 
