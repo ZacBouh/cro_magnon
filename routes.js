@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import path from 'path'
-import { savePost, getPosts, getPostById, deletePost } from './storage.js'
+import { savePost, getPosts, getPostById, deletePost, getUsersByEmail, getUsersById, getUsers, saveUser, login  } from './storage.js'
 
 const app = express()
 

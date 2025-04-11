@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto'
 import fs from 'fs/promises'
+import bcrypt from 'bcrypt'
 
 export const savePost = async (post) => {
   let posts = await getPosts()
