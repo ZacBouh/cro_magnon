@@ -150,7 +150,7 @@ export const getUsersByEmail = async (userEmail) => {
 }
 
 export const login = async (email, password) => {
-  const user = await getUserByEmail(email)
+  const user = await getUsersByEmail(email)
 
   if (!user) {
     console.log('Login failed: user not found')
