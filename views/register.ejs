@@ -11,10 +11,10 @@
   <div class="form-container">
     <h1>Inscription</h1>
 
-    <form id="articleForm" enctype="multipart/form-data">
+    <form id="articleForm">
       <label>
         Email
-        <input type="text" name="email" required>
+        <input type="email" name="email" required>
       </label>
 
       <label>
@@ -29,9 +29,11 @@
     import { registerForm } from '/public/js/form.js';
 
     const form = document.getElementById('articleForm');
-    const token = '<%= token %>';
 
-    form.addEventListener('submit', (e) => submitForm(e, token));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      registerForm(e)
+    });
   </script>
 </body>
 </html>

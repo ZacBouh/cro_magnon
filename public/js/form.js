@@ -54,6 +54,7 @@ export async function registerForm(event) {
 
   const form = event.target;
   const formData = new FormData(form);
+console.log(form);
 
   const response = await fetch("/register", {
     method: "POST",

@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import path from 'path'
-import { savePost, getPosts, getPostById, deletePost } from './storage.js'
+import { savePost, getPosts, getPostById, deletePost, saveUser, getUsers, getUsersById, getUserByEmail   } from './storage.js'
 
 const app = express()
 
@@ -33,6 +33,7 @@ app.get('/', async (req, res) => {
   res.render('list-article', { articles })
 })
 
+//Articles
 app.get('/create', (req, res) => {
   res.render('create-form')
 })
@@ -82,6 +83,34 @@ app.post('/submit', upload.single('fichier'), async (req, res) => {
   res.render('list-article', {
     articles
   })
+})
+
+//Users
+app.get('/register', (req, res) => {
+  res.render('register')
+})
+
+app.post('/register', async (req, res) => {
+  console.log("Request body : ", req.body)
+
+  const { email, password } = req.body
+  const existingUser = await getUserByEmail(email)
+
+  if (existingUser) {
+    console.log('Email déjà utilisé')
+    return res.send('Cet email est déjà enregistré.')
+  }
+
+  const newUser = { email, password }
+
+  try {
+    await saveUser(newUser)
+    console.log('Utilisateur enregistré avec succès')
+    res.redirect('/') 
+  } catch (err) {
+    console.error('Erreur lors de l’enregistrement :', err)
+    res.status(500).send("Erreur lors de l'inscription")
+  }
 })
 
 export { app }

@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto'
 import fs from 'fs/promises'
+import bcrypt from 'bcrypt'
 
 export const savePost = async (post) => {
   let posts = await getPosts()
@@ -134,7 +135,7 @@ export const getUsersById = async (userId) => {
   return user
 }
 
-export const getUsersByEmail = async (userEmail) => {
+export const getUserByEmail = async (userEmail) => {
   const users = await getUsers()
   if (!users) {
     console.log('Error: no saved user found')
