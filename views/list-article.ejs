@@ -19,13 +19,15 @@
           <p><%= article.description %></p>
           <p><strong>Auteur :</strong> <%= article.auteur %></p>
     
-          <form action="/articles/<%= article.id %>/edit" method="GET" style="display:inline;">
-            <button type="submit">Modifier</button>
-          </form>
-    
-          <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="display:inline;">
-            <button type="submit" onclick="return confirm('Supprimer cet article ?')">Supprimer</button>
-          </form>
+          <% if (token) { %>
+            <form action="/articles/<%= article.id %>/edit" method="GET" style="display:inline;">
+              <button type="submit">Modifier</button>
+            </form>
+      
+            <form action="/articles/<%= article.id %>?_method=DELETE" method="POST" style="display:inline;">
+              <button type="submit" onclick="return confirm('Supprimer cet article ?')">Supprimer</button>
+            </form>
+          <% } %>
         </li>
       <% }) %>
     </ul>
