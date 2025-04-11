@@ -10,6 +10,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/fichiers', express.static('fichiers'))
 app.use('/public', express.static('public'))
 
+app.use((req, res, next) => {
+  res.locals.token = req.session && req.session.token || 'fff'; // ou req.user.token, ou autre
+  next();
+});
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'fichiers/')
