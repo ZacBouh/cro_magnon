@@ -135,7 +135,7 @@ export const getUsersById = async (userId) => {
   return user
 }
 
-export const getUsersByEmail = async (userEmail) => {
+export const getUserByEmail = async (userEmail) => {
   const users = await getUsers()
   if (!users) {
     console.log('Error: no saved user found')

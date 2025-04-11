@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import multer from 'multer'
 import path from 'path'
-import { savePost, getPosts, getPostById, deletePost, login } from './storage.js'
+import { savePost, getPosts, getPostById, deletePost, login, saveUser, getUserByEmail } from './storage.js'
 import { getJwt } from './auth.js'
 
 const app = express()
@@ -125,7 +125,7 @@ app.post('/register', async (req, res) => {
 
   if (existingUser) {
     console.log('Email déjà utilisé')
-    return res.send('Cet email est déjà enregistré.')
+    res.status(500).json({error: "Cet email est déjà enregistré."})
   }
 
   const newUser = { email, password }
@@ -135,12 +135,26 @@ app.post('/register', async (req, res) => {
     console.log('Utilisateur enregistré avec succès')
     res.redirect('/login') 
   } catch (err) {
-    console.error('Erreur lors de l’enregistrement :', err)
-    res.status(500).send("Erreur lors de l'inscription")
-    res.json({error: "Mon message"})
+    res.status(500).json({error: "Erreur lors de l'inscription"})
   }
 })
 
+app.get('/login', (req, res) => {
+  res.render('login')
+})
 
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body
+
+  const result = await login(email, password)
+
+  if (!result.success) {
+    return  res.status(500).json({error: "Erreur d'identifiant"})
+  }
+
+  console.log("Utilisateur connecté :", result.user)
+
+  res.redirect('/')
+})
 
 export { app }
