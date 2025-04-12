@@ -36,7 +36,7 @@ export const getPosts = async () => {
   } catch (err) {
     console.log('Error reading post data from file : \n', err)
   }
-  console.log('Retrieved saved posts data : \n', posts)
+  console.log('Retrieved saved posts data : ', posts.length, ' posts')
   return posts
 }
 
@@ -116,7 +116,7 @@ export const getUsers = async () => {
   } catch (err) {
     console.log('Error reading user data from file : \n', err)
   }
-  console.log('Retrieved saved users data : \n', users)
+  console.log('Retrieved saved users data : ', users.length, ' users')
   return users
 }
 
@@ -135,7 +135,7 @@ export const getUsersById = async (userId) => {
   return user
 }
 
-export const getUserByEmail = async (userEmail) => {
+export const getUsersByEmail = async (userEmail) => {
   const users = await getUsers()
   if (!users) {
     console.log('Error: no saved user found')
@@ -143,7 +143,6 @@ export const getUserByEmail = async (userEmail) => {
   }
 
   const user = users.filter((user) =>{ 
-    console.log("filter : ", user, " email : ", userEmail)
     return user.email == userEmail
   })[0]
   if (!user) {
@@ -151,23 +150,4 @@ export const getUserByEmail = async (userEmail) => {
     return null
   }
   return user
-}
-
-export const login = async (email, password) => {
-  const user = await getUsersByEmail(email)
-
-  if (!user) {
-    console.log('Login failed: user not found')
-    return { success: false, message: 'Utilisateur non trouvé' }
-  }
-
-  const passwordMatch = await bcrypt.compare(password, user.password)
-
-  if (!passwordMatch) {
-    console.log('Login failed: incorrect password')
-    return { success: false, message: 'Mot de passe incorrect' }
-  }
-
-  console.log('Login successful')
-  return { success: true, user }
 }

@@ -2,8 +2,8 @@ import express from 'express'
 import session from 'express-session'
 import multer from 'multer'
 import path from 'path'
-import { savePost, getPosts, getPostById, deletePost, login, saveUser, getUserByEmail, getUsersByEmail, saveUser } from './storage.js'
-import { getJwt } from './auth.js'
+import { savePost, getPosts, getPostById, deletePost, saveUser, getUsersByEmail } from './storage.js'
+import { getJwt, authMiddleware, csrfMiddleware, login } from './auth.js'
 
 const app = express()
 
@@ -23,7 +23,7 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-  res.locals.token = req.session && req.session.jwt || null; // ou req.user.token, ou autre
+  res.locals.token = (req.session && req.session.jwt) ?? null; // ou req.user.token, ou autre
   next();
 });
 
@@ -40,8 +40,6 @@ const upload = multer({ storage })
 // Routes
 app.get('/', async (req, res) => {
   const articles = await getPosts()
-  console.log('Response articles : ')
-  console.dir(articles)
   res.render('list-article', { articles })
 })
 
@@ -50,20 +48,26 @@ app.post('/login', upload.none(), async (req, res) => {
   console.log("POST on /login")
   const { success, ...payload } = await login(req.body.email, req.body.password)
   if (!success) {
-    res.render('login', {
-      error
+    console.log("[LOGIN] Failed : ", payload.message)
+    res.json({
+      error : payload.message
     })
     return
   }
   
   console.log("Payload ", payload)
-  req.session.jwt = getJwt(payload.user)  
+  req.session.jwt = getJwt(payload.user)
+  console.log("[LOGIN] Session : ", req.session)  
+  res.redirect('/')
+})
+
+app.get('/logout', async(req, res) => {
+  req.session.jwt = null
   res.redirect('/')
 })
 
 
 app.get('/login', async (req, res) => {
-  console.log('request on /login')
   res.render('login')
 })
 
@@ -72,15 +76,14 @@ app.get('/create', (req, res) => {
   res.render('create-form')
 })
 
-app.post('/articles/:id/update', upload.single('fichier'), async (req, res) => {
-  console.log("Request body : ", req.body)
+app.post('/articles/:id/update', authMiddleware, csrfMiddleware, upload.single('fichier'), async (req, res) => {
   if(req?.file) req.body['img'] = req.file.filename;  
   req.body['id'] = req.params.id
   await savePost(req.body) 
   res.redirect('/');
 });
 
-app.get('/articles/:id/edit', async (req, res) => {
+app.get('/articles/:id/edit', authMiddleware,async (req, res) => {
   const postId = req.params.id
   if (!postId) res.redirect('/')
 
@@ -90,7 +93,7 @@ app.get('/articles/:id/edit', async (req, res) => {
   res.render('update-form', { article })
 })
 
-app.post('/articles/:id', async (req, res) => {
+app.post('/articles/:id', authMiddleware, async (req, res) => {
   const postId = req.params.id
   if (!postId) res.redirect('/')
   const method = req.query._method
@@ -101,7 +104,7 @@ app.post('/articles/:id', async (req, res) => {
   res.redirect('/')
 })
 
-app.post('/submit', upload.single('fichier'), async (req, res) => {
+app.post('/submit', authMiddleware, csrfMiddleware, upload.single('fichier'), async (req, res) => {
   let articles = null
 
   try {
@@ -125,8 +128,6 @@ app.get('/register', (req, res) => {
 })
 
 app.post('/register', upload.none(), async (req, res) => {
-  console.log("Request body : ", req.body)
-
   const { email, password } = req.body
   const existingUser = await getUsersByEmail(email)
 

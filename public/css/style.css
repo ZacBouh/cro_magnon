@@ -5,6 +5,7 @@ body {
   }
   
   .form-container {
+    position: relative;
     max-width: 600px;
     margin: auto;
     background-color: white;
@@ -26,12 +27,13 @@ body {
   }
   
   input[type="text"],
+  input[type="password"],
   input[type="file"] {
-    width: 100%;
+    width: 96%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    margin-top: 5px;
+    margin-top: 0.5em;
   }
   
   button {
@@ -61,6 +63,7 @@ body {
   }
   
   .article-card {
+    position: relative;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
@@ -75,7 +78,7 @@ body {
     transform: translateY(-5px);
   }
   
-  .article-card img {
+  img {
     max-width: 100%;
     border-radius: 8px;
     height: auto;
