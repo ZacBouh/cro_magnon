@@ -2,6 +2,26 @@ import { randomUUID } from 'crypto'
 import fs from 'fs/promises'
 import bcrypt from 'bcrypt'
 
+export const init = async () => {
+  console.log("[Storage] Initialization")
+  try {
+
+    await fs.access('posts.json', fs.constants.F_OK) 
+    console.log("[Storage] Existing posts.json found")
+  } catch (err) {
+    console.log("[Storage] Creating posts.json")
+    fs.writeFile('posts.json', '[]')
+  }
+
+  try {
+    await fs.access('users.json', fs.constants.F_OK) 
+    console.log("[Storage] Existing users.json found")
+  } catch (err) {
+    console.log("[Storage] Creating users.json")
+    fs.writeFile('users.json', '[]')
+  }
+}
+
 export const savePost = async (post) => {
   let posts = await getPosts()
 

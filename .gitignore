@@ -1,4 +1,4 @@
-node_modules/*
+node_modules/
 fichiers/*
 posts.json
 users.json
